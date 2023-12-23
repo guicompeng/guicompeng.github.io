@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkloja=self.webpackChunkloja||[]).push([[307],{7616:function(e,n,t){t.r(n),t.d(n,{default:function(){return l}});var u=t(7294),r=t(4222);function l(){return u.createElement(r.Z,{hideFooter:!0},u.createElement("h1",null,"TODO"))}}}]);
+//# sourceMappingURL=component---src-pages-politica-de-privacidade-tsx-7fa6737daf9bf7a56ceb.js.map
