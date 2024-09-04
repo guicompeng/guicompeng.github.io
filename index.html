@@ -42,7 +42,7 @@
             // Adicionar a mensagem recebida na lista de mensagens
             const messagesList = document.getElementById('messages');
             const listItem = document.createElement('li');
-            listItem.textContent = message.toString();
+            listItem.textContent = message.toString() === "true" ? "Movimento detectado - " : "Sem movimento" - (new Date()).toLocaleString("pt-BR");
             messagesList.appendChild(listItem);
         });
 
