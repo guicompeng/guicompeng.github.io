@@ -49,7 +49,7 @@
             listItem.textContent += (new Date()).toLocaleString("pt-BR");
             if(message.toString() === "true") {
                 qtdmovimentos++;
-                document.getElementById("qtdmovimentos").text = qtdmovimentos;
+                document.getElementById("qtdmovimentos").innerHTML = qtdmovimentos;
             }
             messagesList.appendChild(listItem);
         });
