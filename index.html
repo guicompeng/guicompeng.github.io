@@ -6,9 +6,9 @@
     <title>MQTT Client</title>
 </head>
 <body>
-    <h1>MQTT Client - Channel: pir/sensor</h1>
+    <h1>Cliente MQTT - Canal: sensor/pir</h1>
     <div>
-        <p><strong>Messages:</strong></p>
+        <p><strong>Mensagens:</strong></p>
         <ul id="messages"></ul>
     </div>
 
@@ -18,7 +18,7 @@
     <script>
         // Configurações do cliente MQTT
         const brokerUrl = "wss://test.mosquitto.org:8081/mqtt"; // URL do broker MQTT (usando WebSocket seguro)
-        const topic = "pir/sensor"; // Tópico que queremos subscrever
+        const topic = "sensor/pir"; // Tópico que queremos subscrever
 
         // Conectar ao broker MQTT
         const client = mqtt.connect(brokerUrl);
