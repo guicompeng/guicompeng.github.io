@@ -1,1 +1,56 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Client</title>
+</head>
+<body>
+    <h1>MQTT Client - Channel: pir/sensor</h1>
+    <div>
+        <p><strong>Messages:</strong></p>
+        <ul id="messages"></ul>
+    </div>
+
+    <!-- Incluindo a biblioteca MQTT.js via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/mqttws31.min.js"></script>
+
+    <script>
+        // Configurações do cliente MQTT
+        const brokerUrl = "ws://test.mosquitto.org:8081/mqtt"; // URL do broker MQTT (usando WebSocket)
+        const topic = "pir/sensor"; // Tópico que queremos subscrever
+
+        // Criar um cliente MQTT
+        const client = new Paho.MQTT.Client(brokerUrl, "clientId-" + Math.random().toString(16).substr(2, 8));
+
+        // Função chamada quando a conexão com o broker é estabelecida
+        client.onConnectionLost = function(responseObject) {
+            if (responseObject.errorCode !== 0) {
+                console.log("Connection lost: " + responseObject.errorMessage);
+            }
+        };
+
+        // Função chamada quando uma mensagem é recebida
+        client.onMessageArrived = function(message) {
+            console.log("Message received on topic " + message.destinationName + ": " + message.payloadString);
+            // Adicionar a mensagem recebida na lista de mensagens
+            const messagesList = document.getElementById("messages");
+            const listItem = document.createElement("li");
+            listItem.textContent = message.payloadString;
+            messagesList.appendChild(listItem);
+        };
+
+        // Conectar ao broker MQTT
+        client.connect({
+            onSuccess: function() {
+                console.log("Connected to broker");
+                // Inscrever-se no tópico desejado
+                client.subscribe(topic);
+            },
+            onFailure: function(error) {
+                console.log("Connection failed: " + error.errorMessage);
+            }
+        });
+    </script>
+</body>
+</html>
