@@ -8,6 +8,7 @@
 <body>
     <h1>Cliente MQTT - Canal: sensor/pir</h1>
     <div>
+        <p><strong>Total de pessoas:</strong><p id="qtdmovimentos">0</p></p>
         <p><strong>Mensagens:</strong></p>
         <ul id="messages"></ul>
     </div>
@@ -23,6 +24,8 @@
         // Conectar ao broker MQTT
         const client = mqtt.connect(brokerUrl);
 
+        const = qtdmovimentos = 0;
+        
         // Quando a conexão é estabelecida
         client.on('connect', function () {
             console.log('Connected to broker');
@@ -43,7 +46,11 @@
             const messagesList = document.getElementById('messages');
             const listItem = document.createElement('li');
             listItem.textContent = message.toString() === "true" ? "Movimento detectado - " : "Sem movimento - ";
-            listItem.textContent += (new Date()).toLocaleString("pt-BR")
+            listItem.textContent += (new Date()).toLocaleString("pt-BR");
+            if(message.toString() === "true") {
+                qtdmovimentos++;
+                document.getElementById("qtdmovimentos").text = qtdmovimentos;
+            }
             messagesList.appendChild(listItem);
         });
 
