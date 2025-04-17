@@ -1,67 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="auto" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQTT Client</title>
+	<meta charset="UTF-8" />
+	<title>Pellu</title>
+
+	<meta name="description" content="Pellu - A Rede Social do Pet" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" href="assets/favicon.png" />
+
+	<meta property="og:title" content="Pellu" />
+	<meta property="og:description" content="A Rede Social do Pet" />
+
+	<link rel="stylesheet" href="assets/tobi.css" />
+	<link rel="stylesheet" href="assets/style.css" />
+
 </head>
+
 <body>
-    <h1>Cliente MQTT - Canal: sensor/pir</h1>
-    <div>
-        <p><strong>Total de pessoas:</strong> <span id="qtdmovimentos">0</span></p>
-        <p><strong>Mensagens:</strong></p>
-        <ul id="messages"></ul>
-    </div>
+	<main>
+		<header class="app__header container">
+			<div class="app__logo-wrapper"> <img class="app__logo" src="assets/logo-gray.svg" alt="Pellu"></div>
+			<div class="app__infos">
+				<h1 class="app__name">Pellu</h1>
+				<p class="app__description">A Rede Social do Pet</p>
+				<div class="app__buttons app__buttons--desktop">
+					<a href="https://play.google.com/store/apps/details?id=br.com.pellu" class="app__button-play" target="_blank"
+						title="Baixar na google play">
+						<img src="assets/google-play-badge.png" alt="Baixar na google play">
+					</a>
+					<a href="#" class="app__button-ios" onclick="alert('Em breve o app será lançado na App Store!'); return false;" title="Get on Appstore">
+						<img src="assets/ios-badge.svg" alt="Get on Appstore">
+					</a>
+				</div>
+			</div>
+		</header>
+		<div class="app__buttons app__buttons--mobile container">
+			<a href="https://play.google.com/store/apps/details?id=br.com.pellu" class="app__button-play" target="_blank" title="Get on Google Play">
+				<img src="assets/google-play-badge.png" alt="Get on Google Play">
+			</a>
+			<a href="https://www.apple.com/ios/app-store/" class="app__button-ios" target="_blank"
+				title="Get on Appstore">
+				<img src="assets/ios-badge.svg" alt="Get on Appstore">
+			</a>
+		</div>
+		<section class="app__features app__section container">
+			<h2 class="app__section-title">Sobre este app</h2>
+			<div>
+				<div>
+					<h5>Rede social</h5>
+					<p class="p-desc">Explorar e compartilhar posts: Memes, histórias engraçadas, dicas e fotos dos pets mais adoráveis. Compartilhe momentos únicos e descubra novos conteúdos criados por outros apaixonados por animais.</p>
+				</div>
+				<div class="app__feature">
+					<h5>Adoção</h5>
+					<p class="p-desc">Adote ou cadastre pets para adoção: Se está procurando adotar um novo amigo, explore uma lista de pets disponíveis na sua região. Ou, se você tem um pet para adoção, cadastre-o facilmente e ajude-o a encontrar um novo lar.</p>
+				</div>
+				<div class="app__feature">
+					<h5>Gerenciar Pet</h5>
+					<p class="p-desc">Gerencie a saúde do seu pet: você pode registrar as informações do seu pet, incluindo vacinas. Tenha tudo organizado em um só lugar para nunca perder uma consulta ou data de vacinação importante.</p>
+				</div>
+			
+		</section>
+		<section class="app__screenshots app__section">
+			<div class="app__screenshots-wrapper container-desktop">
+				<div class="app__screenshots-list">
+					<a href="assets/prints/a.png" class="lightbox">
+						<img src="assets/prints/a.png" class="app__screenshot" alt="" style="border: 2px solid #ccc;" />
+					</a>
+					<a href="assets/prints/b.png" class="lightbox">
+						<img src="assets/prints/b.png" class="app__screenshot" alt="" style="border: 2px solid #ccc;" />
+					</a>
+					<a href="assets/prints/c.png" class="lightbox">
+						<img src="assets/prints/c.png" class="app__screenshot" alt="" style="border: 2px solid #ccc;" />
+					</a>
+					<a href="assets/prints/d.png" class="lightbox">
+						<img src="assets/prints/d.png" class="app__screenshot" alt="" style="border: 2px solid #ccc;" />
+					</a>
+					<a href="assets/prints/e.png" class="lightbox">
+						<img src="assets/prints/e.png" class="app__screenshot" alt="" style="border: 2px solid #ccc;" />
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<footer class="footer">
+		<div class="container">
+			<div class="footer__container">
+				<p class="footer__love">
+					<script>document.write('&copy;' + (new Date()).getFullYear());</script>
+					<noscript>&copy;2024</noscript> Todos os direitos reservados
+				</p>
+				<ul class="footer__links">
+					<li class="footer__link">
+						<a href="privacidade.html">Privacidade</a>
+					</li>
+					<li class="footer__link">
+						<a href="termos.html">Termos de Uso</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</footer>
 
-    <!-- Incluindo a biblioteca MQTT.js via CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.10.1/mqtt.min.js"></script>
+	<script type="text/javascript" src="assets/tobi.min.js">
+	</script>
+	<script>
+		window.onload = function () {
+			var tobi = new Tobi();
+		};
+	</script>
 
-    <script>
-        // Configurações do cliente MQTT
-        const brokerUrl = "wss://test.mosquitto.org:8081/mqtt"; // URL do broker MQTT (usando WebSocket seguro)
-        const topic = "sensor/pir"; // Tópico que queremos subscrever
-
-        // Conectar ao broker MQTT
-        const client = mqtt.connect(brokerUrl);
-
-        let qtdmovimentos = 0;
-        
-        // Quando a conexão é estabelecida
-        client.on('connect', function () {
-            console.log('Connected to broker');
-            // Subscrever-se ao tópico desejado
-            client.subscribe(topic, function (err) {
-                if (!err) {
-                    console.log('Subscribed to topic:', topic);
-                } else {
-                    console.log('Subscription error:', err);
-                }
-            });
-        });
-
-        // Quando uma mensagem é recebida
-        client.on('message', function (topic, message) {
-            console.log('Message received:', message.toString());
-            // Adicionar a mensagem recebida na lista de mensagens
-            const messagesList = document.getElementById('messages');
-            const listItem = document.createElement('li');
-            listItem.textContent = message.toString() === "true" ? "Movimento detectado - " : "Sem movimento - ";
-            listItem.textContent += (new Date()).toLocaleString("pt-BR");
-            if(message.toString() === "true") {
-                qtdmovimentos++;
-                document.getElementById("qtdmovimentos").innerHTML = qtdmovimentos;
-            }
-            messagesList.appendChild(listItem);
-        });
-
-        // Quando a conexão é perdida ou há um erro
-        client.on('error', function (error) {
-            console.log('Connection error:', error);
-        });
-
-        client.on('close', function () {
-            console.log('Connection closed');
-        });
-    </script>
 </body>
+
 </html>
