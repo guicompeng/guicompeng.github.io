@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Solicitar exclusão de conta</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+			background-color: #f4f4f4;
+		}
+
+		.delete-account-container {
+			max-width: 400px;
+			width: 100%;
+			padding: 30px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			background-color: #fff;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.delete-account-container h2 {
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		.delete-account-container p {
+			margin-bottom: 20px;
+			color: #666;
+		}
+
+		.delete-account-container input {
+			width: 100%;
+			padding: 12px;
+			margin: 10px 0;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		.delete-account-container button {
+			width: 100%;
+			padding: 12px;
+			background-color: #e74c3c;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		.delete-account-container button:hover {
+			background-color: #c0392b;
+		}
+
+		.delete-account-container .error-message {
+			color: red;
+			display: none;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="delete-account-container">
+		<img src="assets/full-logo.svg" alt="Pellu Logo" style="display: block; margin: 0 auto 20px; max-width: 100px;">
+		<h2>Solicitar exclusão de conta</h2>
+		<p>Ao solicitar a exclusão de conta, nós iremos analisá-la. Se tudo estiver certo, todos os seus dados serão
+			permanentemente removidos e não poderão ser recuperados. Por favor, confirme seu login e senha para
+			continuar.</p>
+		<input type="text" id="login" placeholder="Login" required style="box-sizing: border-box;">
+		<input type="password" id="password" placeholder="Senha" required style="box-sizing: border-box;">
+		<button onclick="deleteAccount()" style="margin-top: 20px;">Solicitar exclusão</button>
+		<p id="error-message" class="error-message">Usuário ou senha incorretos.</p>
+	</div>
+
+	<script>
+		function deleteAccount() {
+			const login = document.getElementById('login').value;
+			const password = document.getElementById('password').value;
+			const errorMessage = document.getElementById('error-message');
+
+			fetch('/v1/accounts/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ email: login, password })
+			})
+				.then(res => res.json())
+				.then(data => {
+					if (data.token) {
+						return fetch('/v1/accounts', {
+							method: 'DELETE',
+							headers: {
+								'Content-Type': 'application/json',
+								'Authorization': `Bearer ${data.token}`
+							},
+							body: JSON.stringify({ login })
+						});
+					} else {
+						throw new Error('Login failed');
+					}
+				})
+				.then(res => {
+					if (res.status === 200) {
+						alert('Conta excluída com sucesso!');
+						window.location.href = '/';
+					} else {
+						errorMessage.style.display = 'block';
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					errorMessage.style.display = 'block';
+				});
+		}
+	</script>
+</body>
+
+</html>
